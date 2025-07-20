@@ -16,7 +16,10 @@ import incomeRoute from './routes/incomeRoute.js'
 import reportRoutes from './routes/reportRoutes.js';
 app.use(express.json())
 app.use(cors())
-
+app.use(cors({
+  origin: 'http://127.0.0.1:5500',
+  credentials: true,
+}));
 
 app.use('/api/users',userRoutes);
 app.use('/api/expense',expenseRoutes)
