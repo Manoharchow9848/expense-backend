@@ -62,7 +62,7 @@ export const getPaymentDetailById = async (req, res) => {
         res.send(`
             <html>
               <head>
-                <meta http-equiv="refresh" content="5; url=http://127.0.0.1:5500/index.html" />
+                <meta http-equiv="refresh" content="5; url=https://manoharchow9848.github.io/expense-frontend/index.html" />
               </head>
               <body style="font-family: Arial; text-align: center; margin-top: 100px;">
                 <h2>Payment status: ${status}</h2>
