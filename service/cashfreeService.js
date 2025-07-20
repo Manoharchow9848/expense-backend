@@ -14,7 +14,7 @@ export const createOrder = async (orderId, orderAmount, orderCurrency = "INR", c
                 customer_phone: customerPhone
             },
             order_meta: {
-                return_url: `http://localhost:3000/api/pay/${orderId}`,
+                return_url: `https://expense-backend-7df0.onrender.com/api/pay/${orderId}`,
                 payment_methods: "ccc, upi, nb"
             },
             order_expiry_time: formattedExpiryDate
