@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
-export const sequelize = new Sequelize('railway', 'root', 'ahFRuBJIdRvdfzhYubqNeNAJDkcGAkbw@767', {
-  host: 'mysql.railway.internal',
+export const sequelize = new Sequelize('expenses', 'root', 'Manuraja@767', {
+  host: 'localhost',
   dialect: 'mysql'
 });
 
@@ -11,4 +11,4 @@ export const db = async()=>{
 } catch (error) {
   console.error('Unable to connect to the database:', error);
 }
-} 
+}
