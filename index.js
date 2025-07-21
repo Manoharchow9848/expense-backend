@@ -2,7 +2,7 @@ import express from 'express';
 import { db,sequelize } from './connectdb/db.js';
 import cors from 'cors'
 import dotenv from 'dotenv';
-import sib from 'sib-api-v3-sdk';
+import helmet from 'helmet';
 dotenv.config();
 const app = express();
 import User from './model/user.js';
@@ -21,7 +21,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
-
+app.use(helmet());
 app.use('/api/users',userRoutes);
 app.use('/api/expense',expenseRoutes)
 app.use('/api/pay',paymentroutes)
