@@ -12,6 +12,10 @@ export const downloadReport = async (req, res) => {
   try {
     const userId = req.user.id;
 
+    if(req.user.isPremium=== false){
+      return res.status(403).json({ message: "Access denied. Premium users only." });
+    } 
+
 
     const today = new Date();
     const startOfDay = new Date(today.setHours(0, 0, 0, 0));
