@@ -4,12 +4,22 @@ import pdfkit from 'pdfkit';
 import Income from '../model/income.js';
 import Expense from '../model/expense.js';
 import { Op } from 'sequelize';
-
+import User from '../model/user.js';
 const __dirname = path.resolve();
 
 export const downloadReport = async (req, res) => {
   try {
     const userId = req.user.id;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    if (!user.isPremium) {
+      return res.status(403).json({ message: "Access denied. Premium users only." });
+    }
+   
+
 
     if (req.user.isPremium === false) {
       return res.status(403).json({ message: "Access denied. Premium users only." });
