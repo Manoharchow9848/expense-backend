@@ -1,4 +1,3 @@
-
 import fs from 'fs';
 import path from 'path';
 import pdfkit from 'pdfkit';
@@ -12,10 +11,9 @@ export const downloadReport = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    if(req.user.isPremium=== false){
+    if (req.user.isPremium === false) {
       return res.status(403).json({ message: "Access denied. Premium users only." });
-    } 
-
+    }
 
     const today = new Date();
     const startOfDay = new Date(today.setHours(0, 0, 0, 0));
@@ -95,14 +93,29 @@ export const downloadReport = async (req, res) => {
     doc.fontSize(14).text(`User ID: ${userId}`).moveDown();
     doc.text(`Date: ${new Date().toLocaleDateString()}`).moveDown();
 
+    // Daily Report
     doc.fontSize(16).text('Daily Report');
     doc.fontSize(12).text(`Income: ₹${dailyIncome.reduce((sum, item) => sum + item.amount, 0)}`);
     doc.text(`Expense: ₹${dailyExpense.reduce((sum, item) => sum + item.price, 0)}`).moveDown();
 
-    doc.fontSize(16).text('Monthly Report');
-    doc.fontSize(12).text(`Income: ₹${monthlyIncome.reduce((sum, item) => sum + item.amount, 0)}`);
-    doc.text(`Expense: ₹${monthlyExpense.reduce((sum, item) => sum + item.price, 0)}`).moveDown();
+    // Monthly Report with details
+    doc.fontSize(16).text('Monthly Report').moveDown();
 
+    doc.fontSize(14).text('Incomes:');
+    monthlyIncome.forEach((income, index) => {
+      doc.fontSize(12).text(`${index + 1}. Source: ${income.source} | Amount: ₹${income.amount}`);
+    });
+    const totalMonthlyIncome = monthlyIncome.reduce((sum, item) => sum + item.amount, 0);
+    doc.moveDown().fontSize(12).text(`Total Income: ₹${totalMonthlyIncome}`).moveDown();
+
+    doc.fontSize(14).text('Expenses:');
+    monthlyExpense.forEach((expense, index) => {
+      doc.fontSize(12).text(`${index + 1}. Name: ${expense.name} | Price: ₹${expense.price} | Category: ${expense.category}`);
+    });
+    const totalMonthlyExpense = monthlyExpense.reduce((sum, item) => sum + item.price, 0);
+    doc.moveDown().fontSize(12).text(`Total Expense: ₹${totalMonthlyExpense}`).moveDown();
+
+    // Yearly Report
     doc.fontSize(16).text('Yearly Report');
     doc.fontSize(12).text(`Income: ₹${totalYearlyIncome}`);
     doc.text(`Expense: ₹${totalYearlyExpense}`);
@@ -115,8 +128,6 @@ export const downloadReport = async (req, res) => {
         if (err) {
           console.error('Download error:', err);
         }
-
-        // Clean up file
         fs.unlinkSync(reportPath);
       });
     });
